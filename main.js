@@ -1,19 +1,11 @@
 console.log("Inicio");
-const primerNumero = prompt("Ingrese un numero: ");
-if (isNaN(primerNumero)) alert("Debe ingresar un numero");
-else
-  alert(
-    primerNumero > 1000
-      ? "El número es mayor a 1000"
-      : "El número es menor a 1000"
-  );
-
-const segundoNumero = prompt("Ingrese otro numero");
-if (isNaN(segundoNumero)) alert("Debe ingresar un numero");
-else
-  alert(
-    segundoNumero >= 10 && segundoNuasdmero <= 50
-      ? "El número esta entre 10 y 50"
-      : "El número no esta entre 10 y 50"
-  );
-3;
+let suma = 0;
+let input = 0;
+do {
+  input = prompt("Ingrese un numero (o un caracter para terminar): ");
+  if (isNaN(input)) alert(`La suma final es: ${suma}`);
+  else {
+    suma += parseInt(input);
+    alert(`La suma actual es: ${suma}`);
+  }
+} while (!isNaN(input));
