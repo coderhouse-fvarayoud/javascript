@@ -5,7 +5,7 @@ class Pedido {
     this.nombre = nombre;
     this.direccion = direccion;
     this.telefono = telefono;
-    this.precio = precio;
+    this.precio = precio.toFixed(2);
     this.entregado = false;
   }
 
@@ -14,7 +14,9 @@ class Pedido {
   }
 
   aplicarDescuento(descuentoEnPorcentaje) {
-    this.precio *= (100 - descuentoEnPorcentaje) / 100;
+    this.precio = ((this.precio * (100 - descuentoEnPorcentaje)) / 100).toFixed(
+      2
+    );
   }
 
   format() {
