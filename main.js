@@ -5,7 +5,7 @@ class Pedido {
     this.nombre = nombre;
     this.direccion = direccion;
     this.telefono = telefono;
-    this.precio = precio.toFixed(2);
+    this.precio = Number.parseFloat(precio.toFixed(2));
     this.entregado = false;
   }
 
@@ -28,23 +28,77 @@ class Pedido {
   }
 }
 
-const nombre = prompt("Ingrese nombre del pedido: ");
-const direccion = prompt("Ingrese dirección del pedido: ");
-const telefono = prompt("Ingrese teléfono del pedido: ");
-const precio = Number(prompt("Ingrese el precio del pedido: "));
+/*
+Funcion para ingresar un pedido por prompt.
+*/
+const inputPedido = () => {
+  const nombre = prompt("Ingrese nombre del pedido: ");
+  const direccion = prompt("Ingrese dirección del pedido: ");
+  const telefono = prompt("Ingrese teléfono del pedido: ");
+  const precio = Number(prompt("Ingrese el precio del pedido: "));
 
-if (nombre && direccion && telefono && precio) {
-  const pedido_1 = new Pedido(nombre, direccion, telefono, precio);
-  /*
-  Muestro la devolucion de la funcion format(), luego le cambio el estado al pedido
-  con la funcion marcarEntregado(), le aplico un descuento con la funcion aplicarDescuento(),
-  y vuelvo a mostrar el pedido actualizado.
-  */
-  alert(pedido_1.format());
-  pedido_1.marcarEntregado();
-  pedido_1.aplicarDescuento(10);
-  alert(pedido_1.format());
-  console.log(pedido_1);
-} else {
-  alert("Debe ingresar todos los datos.");
-}
+  if (nombre && direccion && telefono && precio) {
+    const pedidoNew = new Pedido(nombre, direccion, telefono, precio);
+    alert(pedidoNew.format());
+    /*
+    Marcar como entregado un pedido por medio a modo de prueba
+    */
+    if (pedidos.length % 2) pedidoNew.marcarEntregado();
+    console.log("Nuevo pedido: ", pedidoNew);
+    pedidos.push(pedidoNew);
+    console.log("Array actual: ", pedidos);
+    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  } else {
+    alert("Debe ingresar todos los datos.");
+  }
+};
+
+/*
+Muestra por consola solo los pedidos marcados como "sin entregar"
+*/
+const mostrarPedidosSinEntregar = () => {
+  const pedidosSinEntregar = pedidos.filter((pedido) => !pedido.entregado);
+  console.log("Pedidos sin entregar: ", pedidosSinEntregar);
+};
+
+/*
+Suma el precio de todos los pedidos y los saca por consola
+*/
+const calcularVentasTotales = () => {
+  let ventasTotales = 0;
+  pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
+  console.log("Ventas totales: ", "$" + ventasTotales.toFixed(2));
+};
+
+/*
+Borra todos los pedidos guardados en memoria y en el localStorage
+*/
+const clearPedidos = () => {
+  pedidos = [];
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+};
+
+/*
+Ordena el array de pedidos de mayor a menor segun su precio
+*/
+const ordenarPorPrecio = () => {
+  console.log(
+    "Lista ordenada por precios: ",
+    pedidos.sort((a, b) => b.precio - a.precio)
+  );
+};
+
+/*
+Marca todos los pedidos del array como entregados
+*/
+const marcarTodosComoEntregados = () => {
+  pedidos = pedidos.map((pedido) => {
+    pedido.marcarEntregado();
+    return pedido;
+  });
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  console.log("Nuevo array: ", pedidos);
+};
+
+let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+localStorage.setItem("pedidos", JSON.stringify(pedidos));
