@@ -1,12 +1,20 @@
 class Pedido {
-  constructor(nombre, direccion, telefono, precio) {
-    this.id = Date.now();
-    this.fechaCreado = new Date();
+  constructor({
+    nombre,
+    direccion,
+    telefono,
+    precio,
+    entregado,
+    id,
+    fechaCreado,
+  }) {
+    this.id = id || Date.now();
+    this.fechaCreado = fechaCreado || new Date();
     this.nombre = nombre;
     this.direccion = direccion;
     this.telefono = telefono;
     this.precio = Number.parseFloat(precio.toFixed(2));
-    this.entregado = false;
+    this.entregado = entregado || false;
   }
 
   marcarEntregado() {
@@ -38,12 +46,8 @@ const inputPedido = () => {
   const precio = Number(prompt("Ingrese el precio del pedido: "));
 
   if (nombre && direccion && telefono && precio) {
-    const pedidoNew = new Pedido(nombre, direccion, telefono, precio);
+    const pedidoNew = new Pedido({ nombre, direccion, telefono, precio });
     alert(pedidoNew.format());
-    /*
-    Marcar como entregado un pedido por medio a modo de prueba
-    */
-    if (pedidos.length % 2) pedidoNew.marcarEntregado();
     console.log("Nuevo pedido: ", pedidoNew);
     pedidos.push(pedidoNew);
     console.log("Array actual: ", pedidos);
@@ -76,6 +80,7 @@ Borra todos los pedidos guardados en memoria y en el localStorage
 const clearPedidos = () => {
   pedidos = [];
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  console.log("Nuevo array: ", pedidos);
 };
 
 /*
@@ -100,5 +105,6 @@ const marcarTodosComoEntregados = () => {
   console.log("Nuevo array: ", pedidos);
 };
 
-let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+const pedidosJSON = JSON.parse(localStorage.getItem("pedidos")) || [];
+let pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
 localStorage.setItem("pedidos", JSON.stringify(pedidos));
