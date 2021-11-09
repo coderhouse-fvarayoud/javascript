@@ -8,7 +8,6 @@ class Pedido {
     id,
     fechaCreado,
   }) {
-    console.log("Test...");
     this.id = id || Date.now();
     this.fechaCreado = fechaCreado || new Date();
     this.nombre = nombre;
