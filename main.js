@@ -87,7 +87,7 @@ const cambiarEstadoPedido = (id) => {
     }
     return pedido;
   });
-  // localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
   render();
 };
 
