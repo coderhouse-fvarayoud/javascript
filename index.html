@@ -10,16 +10,30 @@
 </head>
 
 <body>
+    <div id="modal" class="modal__container">
+        <div class="modal__dialog">
+            <h2>Ingresar pedido</h2>
+            <p>Nombre: </p>
+            <input id="input-nombre" type="text" />
+            <p>Dirección: </p>
+            <input id="input-direccion" type="text" />
+            <p>Teléfono: </p>
+            <input id="input-telefono" type="text" />
+            <p>Precio: </p>
+            <input id="input-precio" type="number" />
+            <div>
+                <button class="primary-button" onclick="changeModalStatus(false)">Cancelar</button>
+                <button class="primary-button" onclick="agregarPedido()">Ingresar</button>
+            </div>
+
+        </div>
+
+    </div>
     <div class="container">
         <div class="header">
             <h1>Estadísticas de ventas</h1>
             <div class="flex">
-                <button class="primary-button" onclick="inputPedido()">Agregar Pedido</button><br />
-                <!-- <button class="primary-button" onclick="marcarTodosComoEntregados()">Marcar todos como
-                    entregados</button><br />
-                <button class="primary-button" onclick="marcarTodosComoPendientes()">Marcar todos como
-                    pendientes</button><br /> -->
-                <!-- <button class="primary-button" onclick="clearPedidos()">Eliminar todos los pedidos</button><br /> -->
+                <button class="primary-button" onclick="changeModalStatus(true)">Agregar Pedido</button>
             </div>
         </div>
         <h3>Ventas totales: <span id="ventasTotales"></span></h3>
@@ -36,6 +50,5 @@
     </div>
     <script src="main.js"></script>
 </body>
-
 
 </html>

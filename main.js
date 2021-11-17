@@ -43,36 +43,6 @@ class Pedido {
 }
 
 /*
-Funcion para ingresar un pedido por prompt.
-*/
-const inputPedido = () => {
-  const nombre = prompt("Ingrese nombre del pedido: ");
-  const direccion = prompt("Ingrese dirección del pedido: ");
-  const telefono = prompt("Ingrese teléfono del pedido: ");
-  const precio = Number(prompt("Ingrese el precio del pedido: "));
-
-  if (nombre && direccion && telefono && precio) {
-    const pedidoNew = new Pedido({ nombre, direccion, telefono, precio });
-    alert(pedidoNew.format());
-    console.log("Nuevo pedido: ", pedidoNew);
-    pedidos.push(pedidoNew);
-    console.log("Array actual: ", pedidos);
-    localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  } else {
-    alert("Debe ingresar todos los datos.");
-  }
-  render();
-};
-
-/*
-Muestra por consola solo los pedidos marcados como "sin entregar"
-*/
-const mostrarPedidosSinEntregar = () => {
-  const pedidosSinEntregar = pedidos.filter((pedido) => !pedido.entregado);
-  console.log("Pedidos sin entregar: ", pedidosSinEntregar);
-};
-
-/*
 Suma el precio de todos los pedidos y los saca por consola
 */
 const calcularVentasTotales = () => {
@@ -103,30 +73,6 @@ const ordenarPorPrecio = (orden) => {
     } else return a.precio - b.precio;
   });
   console.log("Lista ordenada por precios: ", pedidos);
-  // pedidos = sortedArray
-  render();
-};
-
-/*
-Marca todos los pedidos del array como entregados
-*/
-const marcarTodosComoEntregados = () => {
-  pedidos = pedidos.map((pedido) => {
-    pedido.marcarEntregado();
-    return pedido;
-  });
-  localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  console.log("Nuevo array: ", pedidos);
-  render();
-};
-
-const marcarTodosComoPendientes = () => {
-  pedidos = pedidos.map((pedido) => {
-    pedido.marcarPendiente();
-    return pedido;
-  });
-  localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  console.log("Nuevo array: ", pedidos);
   render();
 };
 
@@ -149,6 +95,35 @@ const eliminarPedido = (id) => {
   pedidos = pedidos.filter((pedido) => pedido.id !== id);
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
   render();
+};
+
+const changeModalStatus = (status) => {
+  if (status) document.getElementById("modal").style.display = "flex";
+  else document.getElementById("modal").style.display = "none";
+};
+
+const agregarPedido = () => {
+  const nombre = document.getElementById("input-nombre").value;
+  const direccion = document.getElementById("input-direccion").value;
+  const telefono = document.getElementById("input-telefono").value;
+  const precio = Number.parseFloat(
+    document.getElementById("input-precio").value
+  );
+
+  if (nombre && direccion && telefono && precio) {
+    console.log(nombre, direccion, telefono, precio);
+    const pedidoNew = new Pedido({ nombre, direccion, telefono, precio });
+    alert(pedidoNew.format());
+    console.log("Nuevo pedido: ", pedidoNew);
+    pedidos.push(pedidoNew);
+    console.log("Array actual: ", pedidos);
+    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+    render();
+    changeModalStatus(false);
+  } else {
+    alert("Faltan datos!");
+  }
+  console.log(inputNombre);
 };
 
 const render = () => {
