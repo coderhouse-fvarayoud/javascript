@@ -131,7 +131,6 @@ const marcarTodosComoPendientes = () => {
 };
 
 const cambiarEstadoPedido = (id) => {
-  console.log("Cambio pedido: ", id);
   pedidos.map((pedido) => {
     if (pedido.id === id) {
       if (pedido.entregado) {
@@ -142,14 +141,13 @@ const cambiarEstadoPedido = (id) => {
     }
     return pedido;
   });
-  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  // localStorage.setItem("pedidos", JSON.stringify(pedidos));
   render();
 };
 
 const eliminarPedido = (id) => {
-  console.log("Cambio pedido: ", id);
   pedidos = pedidos.filter((pedido) => pedido.id !== id);
-  // localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
   render();
 };
 
@@ -162,7 +160,7 @@ const render = () => {
     <p><b>Nombre:</b> ${pedido.nombre}</p>
     <p><b>Direccion:</b> ${pedido.direccion}</p>
     <p><b>Teléfono:</b> ${pedido.telefono}</p>
-    <p><b>Precio:</b> $${pedido.precio}</p>
+    <p><b>Precio:</b> $${pedido.precio.toFixed(2)}</p>
     `;
     pedidoHTML += pedido.entregado
       ? `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>Entregado</button>`

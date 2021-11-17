@@ -43,6 +43,7 @@ p {
   border-radius: 8px;
   margin: 8px;
   cursor: pointer;
+  min-width: 300px;
 }
 
 .pedido__container:hover {
