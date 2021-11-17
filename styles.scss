@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+
+$primary-100: #7c43ff;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #fafafa;
+}
+
+p {
+  padding: 4px 0px;
+}
+
+.container {
+  width: 1024px;
+  height: 100vh;
+  background-color: white;
+  padding: 32px;
+}
+
+.pedidos__container {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+
+.pedido__container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  margin: 8px;
+  cursor: pointer;
+}
+
+.pedido__container:hover {
+  background-color: darken(#fafafa, 5%);
+}
+
+.primary-button {
+  background-color: $primary-100;
+  color: white;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  outline: none;
+  margin: 4px;
+}
+
+.primary-button:hover {
+  background-color: lighten($primary-100, 10%);
+}
+
+.secondary-button {
+  background-color: #fafafa;
+  color: black;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  outline: none;
+  margin: 4px;
+}
+
+.secondary-button:hover {
+  background-color: darken(#fafafa, 5%);
+}
+
+.flex {
+  display: flex;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0px;
+}

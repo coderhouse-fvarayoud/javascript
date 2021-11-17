@@ -1,3 +1,5 @@
+const pedidosContainer = document.getElementById("pedidos");
+
 class Pedido {
   constructor({
     nombre,
@@ -19,6 +21,10 @@ class Pedido {
 
   marcarEntregado() {
     this.entregado = true;
+  }
+
+  marcarPendiente() {
+    this.entregado = false;
   }
 
   aplicarDescuento(descuentoEnPorcentaje) {
@@ -55,6 +61,7 @@ const inputPedido = () => {
   } else {
     alert("Debe ingresar todos los datos.");
   }
+  render();
 };
 
 /*
@@ -72,6 +79,9 @@ const calcularVentasTotales = () => {
   let ventasTotales = 0;
   pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
   console.log("Ventas totales: ", "$" + ventasTotales.toFixed(2));
+  document.getElementById(
+    "ventasTotales"
+  ).textContent = `$${ventasTotales.toFixed(2)}`;
 };
 
 /*
@@ -86,11 +96,15 @@ const clearPedidos = () => {
 /*
 Ordena el array de pedidos de mayor a menor segun su precio
 */
-const ordenarPorPrecio = () => {
-  console.log(
-    "Lista ordenada por precios: ",
-    pedidos.sort((a, b) => b.precio - a.precio)
-  );
+const ordenarPorPrecio = (orden) => {
+  pedidos = pedidos.sort((a, b) => {
+    if (orden === "mayor") {
+      return b.precio - a.precio;
+    } else return a.precio - b.precio;
+  });
+  console.log("Lista ordenada por precios: ", pedidos);
+  // pedidos = sortedArray
+  render();
 };
 
 /*
@@ -103,8 +117,67 @@ const marcarTodosComoEntregados = () => {
   });
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
   console.log("Nuevo array: ", pedidos);
+  render();
+};
+
+const marcarTodosComoPendientes = () => {
+  pedidos = pedidos.map((pedido) => {
+    pedido.marcarPendiente();
+    return pedido;
+  });
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  console.log("Nuevo array: ", pedidos);
+  render();
+};
+
+const cambiarEstadoPedido = (id) => {
+  console.log("Cambio pedido: ", id);
+  pedidos.map((pedido) => {
+    if (pedido.id === id) {
+      if (pedido.entregado) {
+        pedido.marcarPendiente();
+      } else {
+        pedido.marcarEntregado();
+      }
+    }
+    return pedido;
+  });
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  render();
+};
+
+const eliminarPedido = (id) => {
+  console.log("Cambio pedido: ", id);
+  pedidos = pedidos.filter((pedido) => pedido.id !== id);
+  // localStorage.setItem("pedidos", JSON.stringify(pedidos));
+  render();
+};
+
+const render = () => {
+  pedidosContainer.innerHTML = "";
+  pedidos.map((pedido) => {
+    const li = document.createElement("li");
+    let pedidoHTML = `
+    <div class="pedido__container">
+    <p><b>Nombre:</b> ${pedido.nombre}</p>
+    <p><b>Direccion:</b> ${pedido.direccion}</p>
+    <p><b>Teléfono:</b> ${pedido.telefono}</p>
+    <p><b>Precio:</b> $${pedido.precio}</p>
+    `;
+    pedidoHTML += pedido.entregado
+      ? `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>Entregado</button>`
+      : `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>No entregado</button>`;
+    pedidoHTML += `<button class="primary-button" onClick=eliminarPedido(${pedido.id})>Eliminar</button>`;
+    pedidoHTML += "</div>";
+
+    li.innerHTML = pedidoHTML;
+    pedidosContainer.appendChild(li);
+  });
+  calcularVentasTotales();
 };
 
 const pedidosJSON = JSON.parse(localStorage.getItem("pedidos")) || [];
 let pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
 localStorage.setItem("pedidos", JSON.stringify(pedidos));
+
+render();

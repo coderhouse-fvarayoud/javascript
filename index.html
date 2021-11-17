@@ -5,20 +5,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="main.js"></script>
     <title>Estadísticas de ventas | JS Coderhouse</title>
-
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1>JS Coderhouse!</h1>
-    <h2>Estadísticas de ventas</h2>
-    <button onclick="inputPedido()">Agregar Pedido</button><br />
-    <button onclick="mostrarPedidosSinEntregar()">Ver Pedidos sin entregar</button><br />
-    <button onclick="calcularVentasTotales()">Calcular ventas totales</button><br />
-    <button onclick="ordenarPorPrecio()">Ordenar por precio (mayor a menor)</button><br />
-    <button onclick="marcarTodosComoEntregados()">Marcar todos como entregados</button><br />
-    <button onclick="clearPedidos()">Eliminar todos los pedidos</button><br />
+    <div class="container">
+        <div class="header">
+            <h1>Estadísticas de ventas</h1>
+            <div class="flex">
+                <button class="primary-button" onclick="inputPedido()">Agregar Pedido</button><br />
+                <!-- <button class="primary-button" onclick="marcarTodosComoEntregados()">Marcar todos como
+                    entregados</button><br />
+                <button class="primary-button" onclick="marcarTodosComoPendientes()">Marcar todos como
+                    pendientes</button><br /> -->
+                <!-- <button class="primary-button" onclick="clearPedidos()">Eliminar todos los pedidos</button><br /> -->
+            </div>
+        </div>
+        <h3>Ventas totales: <span id="ventasTotales"></span></h3>
+        <div class="header">
+            <h3>Lista de pedidos</h3>
+            <div class="flex">
+                <button class="secondary-button" onclick="ordenarPorPrecio('mayor')">Ordenar por precio (mayor a
+                    menor)</button><br />
+                <button class="secondary-button" onclick="ordenarPorPrecio('menor')">Ordenar por precio (menor a
+                    mayor)</button><br />
+            </div>
+        </div>
+        <ul id="pedidos" class="pedidos__container"></ul>
+    </div>
+    <script src="main.js"></script>
 </body>
 
 
