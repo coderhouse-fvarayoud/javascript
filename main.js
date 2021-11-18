@@ -1,5 +1,19 @@
 const pedidosContainer = document.getElementById("pedidos");
 
+const pedidosIniciales = [
+  {
+    nombre: "Pedido 1",
+    direccion: "Direccion 1",
+    telefono: "123456789",
+    precio: 100,
+  },
+  {
+    nombre: "Pedido 2",
+    direccion: "Direccion 2",
+    telefono: "123456789",
+    precio: 200,
+  },
+];
 class Pedido {
   constructor({
     nombre,
@@ -26,24 +40,10 @@ class Pedido {
   marcarPendiente() {
     this.entregado = false;
   }
-
-  aplicarDescuento(descuentoEnPorcentaje) {
-    this.precio = ((this.precio * (100 - descuentoEnPorcentaje)) / 100).toFixed(
-      2
-    );
-  }
-
-  format() {
-    return `El pedido esta a nombre de ${this.nombre}, su teléfono es ${
-      this.telefono
-    }, y la dirección es ${this.direccion}. El precio final es de $${
-      this.precio
-    }. ${this.entregado ? "Ya fue entregado" : "Aún no ha sido entregado"}.`;
-  }
 }
 
 /*
-Suma el precio de todos los pedidos y los saca por consola
+Suma el precio de todos los pedidos y lo muestra en pantalla
 */
 const calcularVentasTotales = () => {
   let ventasTotales = 0;
@@ -76,6 +76,10 @@ const ordenarPorPrecio = (orden) => {
   render();
 };
 
+/*
+Cambia el estado "entregado" del pedido entre true or false y lo guarda
+en el localStorage
+*/
 const cambiarEstadoPedido = (id) => {
   pedidos.map((pedido) => {
     if (pedido.id === id) {
@@ -91,17 +95,27 @@ const cambiarEstadoPedido = (id) => {
   render();
 };
 
+/*
+Elimina un pedido del array segun su id
+*/
 const eliminarPedido = (id) => {
   pedidos = pedidos.filter((pedido) => pedido.id !== id);
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
   render();
 };
 
+/*
+Muestra o oculta el modal de ingreso de pedidos
+*/
 const changeModalStatus = (status) => {
   if (status) document.getElementById("modal").style.display = "flex";
   else document.getElementById("modal").style.display = "none";
 };
 
+/*
+Levanta los datos ingresados en el modal de agregar pedido, verifica que esten
+completos, y de ser asi crea un nuevo pedido con esos datos y lo guarda en el LocalStorage
+*/
 const agregarPedido = () => {
   const nombre = document.getElementById("input-nombre").value;
   const direccion = document.getElementById("input-direccion").value;
@@ -111,21 +125,20 @@ const agregarPedido = () => {
   );
 
   if (nombre && direccion && telefono && precio) {
-    console.log(nombre, direccion, telefono, precio);
     const pedidoNew = new Pedido({ nombre, direccion, telefono, precio });
-    alert(pedidoNew.format());
-    console.log("Nuevo pedido: ", pedidoNew);
     pedidos.push(pedidoNew);
-    console.log("Array actual: ", pedidos);
     localStorage.setItem("pedidos", JSON.stringify(pedidos));
     render();
     changeModalStatus(false);
   } else {
     alert("Faltan datos!");
   }
-  console.log(inputNombre);
 };
 
+/*
+Renderiza en pantalla la lista de pedidos del array, y actualiza el valor de
+ventas totales
+*/
 const render = () => {
   pedidosContainer.innerHTML = "";
   pedidos.map((pedido) => {
@@ -149,7 +162,15 @@ const render = () => {
   calcularVentasTotales();
 };
 
-const pedidosJSON = JSON.parse(localStorage.getItem("pedidos")) || [];
+/*
+Codigo que inicializa el proyecto. Primero busca el array de pedidos en el
+localStorage. Si no encuentra nada, levanta los pedidos hardcodeados en la constante
+pedidosIniciales. Luego mapea ese JSON creando los objetos de tipo Pedido y los guarda
+en el array "pedidos". Finalmente, guarda estos datos en el localStorage, y llama
+a la funcion que renderiza la pantalla.
+*/
+const pedidosJSON =
+  JSON.parse(localStorage.getItem("pedidos")) || pedidosIniciales;
 let pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
 localStorage.setItem("pedidos", JSON.stringify(pedidos));
 
