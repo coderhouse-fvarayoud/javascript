@@ -48,7 +48,6 @@ Suma el precio de todos los pedidos y lo muestra en pantalla
 const calcularVentasTotales = () => {
   let ventasTotales = 0;
   pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
-  console.log("Ventas totales: ", "$" + ventasTotales.toFixed(2));
   document.getElementById(
     "ventasTotales"
   ).textContent = `$${ventasTotales.toFixed(2)}`;
@@ -60,7 +59,6 @@ Borra todos los pedidos guardados en memoria y en el localStorage
 const clearPedidos = () => {
   pedidos = [];
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  console.log("Nuevo array: ", pedidos);
 };
 
 /*
@@ -72,7 +70,6 @@ const ordenarPorPrecio = (orden) => {
       return b.precio - a.precio;
     } else return a.precio - b.precio;
   });
-  console.log("Lista ordenada por precios: ", pedidos);
   render();
 };
 
