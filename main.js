@@ -1,11 +1,13 @@
 const pedidosIniciales = [
   {
+    id: 1,
     nombre: "Pedido 1",
     direccion: "Direccion 1",
     telefono: "123456789",
     precio: 100,
   },
   {
+    id: 2,
     nombre: "Pedido 2",
     direccion: "Direccion 2",
     telefono: "123456789",
@@ -41,6 +43,9 @@ class Pedido {
   }
 }
 
+/*
+Guarda el array de pedidos en localStorage
+*/
 const guardarPedidos = () => {
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
 };
@@ -62,7 +67,7 @@ const clearPedidos = () => {
 };
 
 /*
-Ordena el array de pedidos de mayor a menor segun su precio
+Ordena el array de pedidos de mayor a menor (o de menor a mayor) segun su precio
 */
 const ordenarPorPrecio = (orden) => {
   pedidos = pedidos.sort((a, b) => {
@@ -102,11 +107,16 @@ const eliminarPedido = (id) => {
 };
 
 /*
-Muestra o oculta el modal de ingreso de pedidos
+Muestra o oculta el modal de ingreso de pedidos, y al mostrarlo limpio el contenido
+de los inputs.
 */
 const changeModalStatus = (status) => {
-  if (status) $("#modal").css("display", "flex");
-  else $("#modal").hide();
+  if (status) {
+    $("#input-precio, #input-nombre, #input-telefono, #input-direccion").val(
+      ""
+    );
+    $("#modal").css("display", "flex");
+  } else $("#modal").hide();
 };
 
 /*
@@ -138,7 +148,7 @@ const renderPedidos = () => {
   $("#pedidos").empty();
   pedidos.map((pedido) => {
     let pedidoHTML = `
-    <div class="pedido__container">
+    <li class="pedido__container">
     <p><b>Nombre:</b> ${pedido.nombre}</p>
     <p><b>Direccion:</b> ${pedido.direccion}</p>
     <p><b>Teléfono:</b> ${pedido.telefono}</p>
@@ -148,7 +158,7 @@ const renderPedidos = () => {
       ? `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>Entregado</button>`
       : `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>No entregado</button>`;
     pedidoHTML += `<button class="primary-button" onClick=eliminarPedido(${pedido.id})>Eliminar</button>`;
-    pedidoHTML += "</div>";
+    pedidoHTML += "</li>";
     $("#pedidos").append(pedidoHTML);
   });
   calcularVentasTotales();
@@ -167,10 +177,24 @@ let pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
 guardarPedidos();
 renderPedidos();
 
+/*
+Agrego eventos a los diferentes botones de la pagina, y detecto las teclas
+"enter" y "esc" en el dialogo del modal de ingreso de pedidos.
+*/
 $(() => {
   $("#boton-cancelar").click(() => changeModalStatus(false));
   $("#boton-aceptar").click(() => agregarPedido());
   $("#boton-agregar-pedido").click(() => changeModalStatus(true));
   $("#boton-ordenar-mayor").click(() => ordenarPorPrecio("mayor"));
   $("#boton-ordenar-menor").click(() => ordenarPorPrecio("menor"));
+  $("#input-precio, #input-nombre, #input-telefono, #input-direccion").keydown(
+    (e) => {
+      if (e.keyCode === 13) agregarPedido();
+      if (e.which === 27) changeModalStatus(false);
+      e.stopPropagation();
+    }
+  );
+  $(document).keydown((e) => {
+    if (e.which === 27) changeModalStatus(false);
+  });
 });
