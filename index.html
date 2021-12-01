@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadísticas de ventas | JS Coderhouse</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -22,8 +23,8 @@
             <p>Precio: </p>
             <input id="input-precio" type="number" />
             <div>
-                <button class="primary-button" onclick="changeModalStatus(false)">Cancelar</button>
-                <button class="primary-button" onclick="agregarPedido()">Ingresar</button>
+                <button class="primary-button" id="boton-cancelar">Cancelar</button>
+                <button class="primary-button" id="boton-aceptar">Ingresar</button>
             </div>
 
         </div>
@@ -33,16 +34,16 @@
         <div class="header">
             <h1>Estadísticas de ventas</h1>
             <div class="flex">
-                <button class="primary-button" onclick="changeModalStatus(true)">Agregar Pedido</button>
+                <button class="primary-button" id="boton-agregar-pedido">Agregar Pedido</button>
             </div>
         </div>
         <h3>Ventas totales: <span id="ventasTotales"></span></h3>
         <div class="header">
             <h3>Lista de pedidos</h3>
             <div class="flex">
-                <button class="secondary-button" onclick="ordenarPorPrecio('mayor')">Ordenar por precio (mayor a
+                <button class="secondary-button" id="boton-ordenar-mayor">Ordenar por precio (mayor a
                     menor)</button><br />
-                <button class="secondary-button" onclick="ordenarPorPrecio('menor')">Ordenar por precio (menor a
+                <button class="secondary-button" id="boton-ordenar-menor">Ordenar por precio (menor a
                     mayor)</button><br />
             </div>
         </div>

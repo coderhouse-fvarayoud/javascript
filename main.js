@@ -1,5 +1,3 @@
-const pedidosContainer = document.getElementById("pedidos");
-
 const pedidosIniciales = [
   {
     nombre: "Pedido 1",
@@ -14,6 +12,7 @@ const pedidosIniciales = [
     precio: 200,
   },
 ];
+
 class Pedido {
   constructor({
     nombre,
@@ -42,15 +41,17 @@ class Pedido {
   }
 }
 
+const guardarPedidos = () => {
+  localStorage.setItem("pedidos", JSON.stringify(pedidos));
+};
+
 /*
 Suma el precio de todos los pedidos y lo muestra en pantalla
 */
 const calcularVentasTotales = () => {
   let ventasTotales = 0;
   pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
-  document.getElementById(
-    "ventasTotales"
-  ).textContent = `$${ventasTotales.toFixed(2)}`;
+  $("#ventasTotales").text(`$${ventasTotales.toFixed(2)}`);
 };
 
 /*
@@ -58,7 +59,6 @@ Borra todos los pedidos guardados en memoria y en el localStorage
 */
 const clearPedidos = () => {
   pedidos = [];
-  localStorage.setItem("pedidos", JSON.stringify(pedidos));
 };
 
 /*
@@ -70,7 +70,7 @@ const ordenarPorPrecio = (orden) => {
       return b.precio - a.precio;
     } else return a.precio - b.precio;
   });
-  render();
+  renderPedidos();
 };
 
 /*
@@ -88,8 +88,8 @@ const cambiarEstadoPedido = (id) => {
     }
     return pedido;
   });
-  localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  render();
+  guardarPedidos();
+  renderPedidos();
 };
 
 /*
@@ -97,16 +97,16 @@ Elimina un pedido del array segun su id
 */
 const eliminarPedido = (id) => {
   pedidos = pedidos.filter((pedido) => pedido.id !== id);
-  localStorage.setItem("pedidos", JSON.stringify(pedidos));
-  render();
+  guardarPedidos();
+  renderPedidos();
 };
 
 /*
 Muestra o oculta el modal de ingreso de pedidos
 */
 const changeModalStatus = (status) => {
-  if (status) document.getElementById("modal").style.display = "flex";
-  else document.getElementById("modal").style.display = "none";
+  if (status) $("#modal").css("display", "flex");
+  else $("#modal").hide();
 };
 
 /*
@@ -114,18 +114,16 @@ Levanta los datos ingresados en el modal de agregar pedido, verifica que esten
 completos, y de ser asi crea un nuevo pedido con esos datos y lo guarda en el LocalStorage
 */
 const agregarPedido = () => {
-  const nombre = document.getElementById("input-nombre").value;
-  const direccion = document.getElementById("input-direccion").value;
-  const telefono = document.getElementById("input-telefono").value;
-  const precio = Number.parseFloat(
-    document.getElementById("input-precio").value
-  );
+  const nombre = $("#input-nombre").val();
+  const direccion = $("#input-direccion").val();
+  const telefono = $("#input-telefono").val();
+  const precio = Number.parseFloat($("#input-precio").val());
 
   if (nombre && direccion && telefono && precio) {
     const pedidoNew = new Pedido({ nombre, direccion, telefono, precio });
     pedidos.push(pedidoNew);
-    localStorage.setItem("pedidos", JSON.stringify(pedidos));
-    render();
+    guardarPedidos();
+    renderPedidos();
     changeModalStatus(false);
   } else {
     alert("Faltan datos!");
@@ -136,10 +134,9 @@ const agregarPedido = () => {
 Renderiza en pantalla la lista de pedidos del array, y actualiza el valor de
 ventas totales
 */
-const render = () => {
-  pedidosContainer.innerHTML = "";
+const renderPedidos = () => {
+  $("#pedidos").empty();
   pedidos.map((pedido) => {
-    const li = document.createElement("li");
     let pedidoHTML = `
     <div class="pedido__container">
     <p><b>Nombre:</b> ${pedido.nombre}</p>
@@ -152,9 +149,7 @@ const render = () => {
       : `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>No entregado</button>`;
     pedidoHTML += `<button class="primary-button" onClick=eliminarPedido(${pedido.id})>Eliminar</button>`;
     pedidoHTML += "</div>";
-
-    li.innerHTML = pedidoHTML;
-    pedidosContainer.appendChild(li);
+    $("#pedidos").append(pedidoHTML);
   });
   calcularVentasTotales();
 };
@@ -169,6 +164,13 @@ a la funcion que renderiza la pantalla.
 const pedidosJSON =
   JSON.parse(localStorage.getItem("pedidos")) || pedidosIniciales;
 let pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
-localStorage.setItem("pedidos", JSON.stringify(pedidos));
+guardarPedidos();
+renderPedidos();
 
-render();
+$(() => {
+  $("#boton-cancelar").click(() => changeModalStatus(false));
+  $("#boton-aceptar").click(() => agregarPedido());
+  $("#boton-agregar-pedido").click(() => changeModalStatus(true));
+  $("#boton-ordenar-mayor").click(() => ordenarPorPrecio("mayor"));
+  $("#boton-ordenar-menor").click(() => ordenarPorPrecio("menor"));
+});
