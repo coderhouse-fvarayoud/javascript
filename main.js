@@ -57,6 +57,12 @@ const calcularVentasTotales = () => {
   let ventasTotales = 0;
   pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
   $("#ventasTotales").text(`$${ventasTotales.toFixed(2)}`);
+  /*
+  Se agrega animación para cambiar el tamaño del texto
+  */
+  $("#ventasTotales").animate({ fontSize: "30px" }, "slow", () => {
+    $("#ventasTotales").delay(2000).animate({ fontSize: "20px" }, "slow");
+  });
 };
 
 /*
@@ -108,15 +114,26 @@ const eliminarPedido = (id) => {
 
 /*
 Muestra o oculta el modal de ingreso de pedidos, y al mostrarlo limpio el contenido
-de los inputs.
+de los inputs. Al cambiar de estado se anima el proceso con efectos de fade y slide.
+NOTA: antes de realizar el fadeIn, se aplica la clase "flex" para conservar los estilos
+de la pagina.
 */
 const changeModalStatus = (status) => {
   if (status) {
     $("#input-precio, #input-nombre, #input-telefono, #input-direccion").val(
       ""
     );
-    $("#modal").css("display", "flex");
-  } else $("#modal").hide();
+
+    $("#modal-container")
+      .css("display", "flex")
+      .hide()
+      .fadeIn("fast", () => {
+        $("#modal").css("display", "flex").hide().slideDown();
+      });
+  } else
+    $("#modal").slideUp("fast", () => {
+      $("#modal-container").fadeOut();
+    });
 };
 
 /*

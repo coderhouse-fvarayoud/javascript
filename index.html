@@ -11,8 +11,8 @@
 </head>
 
 <body>
-    <div id="modal" class="modal__container">
-        <div class="modal__dialog">
+    <div id="modal-container" class="modal__container">
+        <div id="modal" class="modal__dialog">
             <h2>Ingresar pedido</h2>
             <p>Nombre: </p>
             <input id="input-nombre" type="text" />
@@ -37,7 +37,9 @@
                 <button class="primary-button" id="boton-agregar-pedido">Agregar Pedido</button>
             </div>
         </div>
-        <h3>Ventas totales: <span id="ventasTotales"></span></h3>
+        <div class="ventas-totales-container">
+            <h3>Ventas totales: <span id="ventasTotales"></span></h3>
+        </div>
         <div class="header">
             <h3>Lista de pedidos</h3>
             <div class="flex">
