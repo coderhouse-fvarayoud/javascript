@@ -15,6 +15,8 @@ const pedidosIniciales = [
   },
 ];
 
+let cotizacionDolar = "";
+
 class Pedido {
   constructor({
     nombre,
@@ -60,9 +62,16 @@ const calcularVentasTotales = () => {
   /*
   Se agrega animación para cambiar el tamaño del texto
   */
-  $("#ventasTotales").animate({ fontSize: "30px" }, "slow", () => {
-    $("#ventasTotales").delay(2000).animate({ fontSize: "20px" }, "slow");
-  });
+  // $("#ventasTotales").animate({ fontSize: "30px" }, "slow", () => {
+  //   $("#ventasTotales").delay(2000).animate({ fontSize: "20px" }, "slow");
+  // });
+};
+
+/*
+Muestra el precio de la cotizacion del dolar blue en pantalla (si logra obtenerlo de la API)
+*/
+const mostrarDolar = () => {
+  cotizacionDolar && $("#cotizacionDolar").text(`$${cotizacionDolar}`);
 };
 
 /*
@@ -171,6 +180,11 @@ const renderPedidos = () => {
     <p><b>Teléfono:</b> ${pedido.telefono}</p>
     <p><b>Precio:</b> $${pedido.precio.toFixed(2)}</p>
     `;
+    if (cotizacionDolar) {
+      pedidoHTML += `<p><b>Precio (en U$S):</b> $${(
+        pedido.precio / parseFloat(cotizacionDolar)
+      ).toFixed(2)}</p>`;
+    }
     pedidoHTML += pedido.entregado
       ? `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>Entregado</button>`
       : `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>No entregado</button>`;
@@ -179,6 +193,7 @@ const renderPedidos = () => {
     $("#pedidos").append(pedidoHTML);
   });
   calcularVentasTotales();
+  mostrarDolar();
 };
 
 /*
@@ -199,6 +214,17 @@ Agrego eventos a los diferentes botones de la pagina, y detecto las teclas
 "enter" y "esc" en el dialogo del modal de ingreso de pedidos.
 */
 $(() => {
+  $.getJSON(
+    "https://www.dolarsi.com/api/api.php?type=valoresprincipales",
+    (res, status) => {
+      if (status === "success") {
+        cotizacionDolar =
+          res.find((item) => item.casa.nombre === "Dolar Blue").casa.venta ||
+          "";
+        renderPedidos();
+      }
+    }
+  );
   $("#boton-cancelar").click(() => changeModalStatus(false));
   $("#boton-aceptar").click(() => agregarPedido());
   $("#boton-agregar-pedido").click(() => changeModalStatus(true));
