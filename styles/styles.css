@@ -145,8 +145,12 @@ textarea {
   padding: 32px 16px;
 }
 
+.modal__title {
+  padding-bottom: 16px;
+}
+
 .modal__error {
-  padding: 8px;
+  padding: 16px 8px;
   color: red;
   font-weight: 600;
 }

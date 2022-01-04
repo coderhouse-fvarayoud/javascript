@@ -15,15 +15,11 @@
 <body>
     <div id="modal-container" class="modal__container">
         <div id="modal" class="modal__dialog">
-            <h2>Ingresar pedido</h2>
-            <p>Nombre: </p>
-            <input id="input-nombre" type="text" />
-            <p>Dirección: </p>
-            <input id="input-direccion" type="text" />
-            <p>Teléfono: </p>
-            <input id="input-telefono" type="text" />
-            <p>Precio (en ARS): </p>
-            <input id="input-precio" type="number" />
+            <h2 class="modal__title">Nuevo pedido</h2>
+            <input id="input-nombre" type="text" placeholder="Nombre" />
+            <input id="input-direccion" type="text" placeholder="Dirección" />
+            <input id="input-telefono" type="text" placeholder="Teléfono" />
+            <input id="input-precio" type="number" placeholder="Precio (en ARS)" />
             <p id="modal-error" class="modal__error"></p>
             <div class="modal__buttons">
                 <button class="button" id="boton-cancelar">Cancelar</button>
@@ -34,7 +30,7 @@
     <div class="header header--main">
         <h1>Mi Negocio</h1>
         <div class="flex">
-            <button class="button button--primary" id="boton-agregar-pedido">Agregar Pedido</button>
+            <button class="button button--primary" id="boton-agregar-pedido">Nuevo Pedido</button>
         </div>
     </div>
     <div class="container">
