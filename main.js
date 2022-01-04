@@ -1,22 +1,4 @@
-const pedidosIniciales = [
-  {
-    id: 1,
-    nombre: "Pedido 1",
-    direccion: "Direccion 1",
-    telefono: "123456789",
-    precio: 100,
-  },
-  {
-    id: 2,
-    nombre: "Pedido 2",
-    direccion: "Direccion 2",
-    telefono: "123456789",
-    precio: 200,
-  },
-];
-
-let cotizacionDolar = "";
-
+// Clase que representa el objeto Pedido
 class Pedido {
   constructor({
     nombre,
@@ -53,28 +35,6 @@ const guardarPedidos = () => {
 };
 
 /*
-Suma el precio de todos los pedidos y lo muestra en pantalla
-*/
-const calcularVentasTotales = () => {
-  let ventasTotales = 0;
-  pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
-  $("#ventasTotales").text(`$${ventasTotales.toFixed(2)}`);
-  /*
-  Se agrega animación para cambiar el tamaño del texto
-  */
-  // $("#ventasTotales").animate({ fontSize: "30px" }, "slow", () => {
-  //   $("#ventasTotales").delay(2000).animate({ fontSize: "20px" }, "slow");
-  // });
-};
-
-/*
-Muestra el precio de la cotizacion del dolar blue en pantalla (si logra obtenerlo de la API)
-*/
-const mostrarDolar = () => {
-  cotizacionDolar && $("#cotizacionDolar").text(`$${cotizacionDolar}`);
-};
-
-/*
 Borra todos los pedidos guardados en memoria y en el localStorage
 */
 const clearPedidos = () => {
@@ -84,11 +44,17 @@ const clearPedidos = () => {
 /*
 Ordena el array de pedidos de mayor a menor (o de menor a mayor) segun su precio
 */
-const ordenarPorPrecio = (orden) => {
+const ordenarPedidos = (valor, orden) => {
   pedidos = pedidos.sort((a, b) => {
-    if (orden === "mayor") {
-      return b.precio - a.precio;
-    } else return a.precio - b.precio;
+    if (valor === "nombre") {
+      if (orden === "asc") {
+        return a.nombre.localeCompare(b.nombre);
+      } else return b.nombre.localeCompare(a.nombre);
+    } else {
+      if (orden === "desc") {
+        return b.precio - a.precio;
+      } else return a.precio - b.precio;
+    }
   });
   renderPedidos();
 };
@@ -127,12 +93,11 @@ de los inputs. Al cambiar de estado se anima el proceso con efectos de fade y sl
 NOTA: antes de realizar el fadeIn, se aplica la clase "flex" para conservar los estilos
 de la pagina.
 */
-const changeModalStatus = (status) => {
+const setIsModalOpen = (status) => {
   if (status) {
     $("#input-precio, #input-nombre, #input-telefono, #input-direccion").val(
       ""
     );
-
     $("#modal-container")
       .css("display", "flex")
       .hide()
@@ -160,7 +125,7 @@ const agregarPedido = () => {
     pedidos.push(pedidoNew);
     guardarPedidos();
     renderPedidos();
-    changeModalStatus(false);
+    setIsModalOpen(false);
   } else {
     alert("Faltan datos!");
   }
@@ -192,8 +157,17 @@ const renderPedidos = () => {
     pedidoHTML += "</li>";
     $("#pedidos").append(pedidoHTML);
   });
-  calcularVentasTotales();
-  mostrarDolar();
+  calcularEstadisticas();
+};
+
+/*
+Actualiza la sección de estadisticas en pantalla
+*/
+const calcularEstadisticas = () => {
+  cotizacionDolar && $("#cotizacionDolar").text(`$${cotizacionDolar}`);
+  let ventasTotales = 0;
+  pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
+  $("#ventasTotales").text(`$${ventasTotales.toFixed(2)}`);
 };
 
 /*
@@ -203,17 +177,20 @@ pedidosIniciales. Luego mapea ese JSON creando los objetos de tipo Pedido y los 
 en el array "pedidos". Finalmente, guarda estos datos en el localStorage, y llama
 a la funcion que renderiza la pantalla.
 */
-const pedidosJSON =
-  JSON.parse(localStorage.getItem("pedidos")) || pedidosIniciales;
-let pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
-guardarPedidos();
-renderPedidos();
 
-/*
-Agrego eventos a los diferentes botones de la pagina, y detecto las teclas
-"enter" y "esc" en el dialogo del modal de ingreso de pedidos.
-*/
+let pedidos = [];
+let cotizacionDolar = "";
+
 $(() => {
+  // Inicializo el array de pedidos con el localStorage, y si no existe con el archivo pedidosIniciales.json
+  $.getJSON("pedidosIniciales.json", (json) => {
+    const pedidosJSON = JSON.parse(localStorage.getItem("pedidos")) || json;
+    pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
+    ordenarPedidos("nombre", "asc");
+    guardarPedidos();
+    renderPedidos();
+  });
+  // Obtengo la cotizacion del dolar
   $.getJSON(
     "https://www.dolarsi.com/api/api.php?type=valoresprincipales",
     (res, status) => {
@@ -225,19 +202,38 @@ $(() => {
       }
     }
   );
-  $("#boton-cancelar").click(() => changeModalStatus(false));
+  // Agrego eventos a los distintos elementos de la pagina
   $("#boton-aceptar").click(() => agregarPedido());
-  $("#boton-agregar-pedido").click(() => changeModalStatus(true));
-  $("#boton-ordenar-mayor").click(() => ordenarPorPrecio("mayor"));
-  $("#boton-ordenar-menor").click(() => ordenarPorPrecio("menor"));
+  $("#boton-cancelar").click(() => setIsModalOpen(false));
+  $("#boton-agregar-pedido").click(() => setIsModalOpen(true));
+  // Ordeno la lista de pedidos al elegir una opcion en el dropdown de orden
+  $("#orden-dropdown").change(() => {
+    const opcionElegida = $("#orden-dropdown").val();
+    switch (opcionElegida) {
+      case "nombre-asc":
+        ordenarPedidos("nombre", "asc");
+        break;
+      case "nombre-desc":
+        ordenarPedidos("nombre", "desc");
+        break;
+      case "precio-asc":
+        ordenarPedidos("precio", "asc");
+        break;
+      case "precio-desc":
+        ordenarPedidos("precio", "desc");
+        break;
+    }
+  });
+  //Agrego eventos de teclado al modal de ingreso de pedidos para poder aceptar con
+  //Enter y salir con ESC
   $("#input-precio, #input-nombre, #input-telefono, #input-direccion").keydown(
     (e) => {
       if (e.keyCode === 13) agregarPedido();
-      if (e.which === 27) changeModalStatus(false);
+      if (e.which === 27) setIsModalOpen(false);
       e.stopPropagation();
     }
   );
   $(document).keydown((e) => {
-    if (e.which === 27) changeModalStatus(false);
+    if (e.which === 27) setIsModalOpen(false);
   });
 });

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadísticas de ventas | JS Coderhouse</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- jQuery 3.6.0 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -26,9 +27,7 @@
                 <button class="primary-button" id="boton-cancelar">Cancelar</button>
                 <button class="primary-button" id="boton-aceptar">Ingresar</button>
             </div>
-
         </div>
-
     </div>
     <div class="container">
         <div class="header">
@@ -44,14 +43,17 @@
         <div class="header">
             <h3>Lista de pedidos</h3>
             <div class="flex">
-                <button class="secondary-button" id="boton-ordenar-mayor">Ordenar por precio (mayor a
-                    menor)</button><br />
-                <button class="secondary-button" id="boton-ordenar-menor">Ordenar por precio (menor a
-                    mayor)</button><br />
+                <select id="orden-dropdown">
+                    <option value="nombre-asc">Ordenar por nombre (asc)</option>
+                    <option value="nombre-desc">Ordenar por nombre (desc)</option>
+                    <option value="precio-asc">Ordenar por precio (asc)</option>
+                    <option value="precio-desc">Ordenar por precio (desc)</option>
+                </select>
             </div>
         </div>
         <ul id="pedidos" class="pedidos__container"></ul>
     </div>
+    <!-- main JS code -->
     <script src="main.js"></script>
 </body>
 

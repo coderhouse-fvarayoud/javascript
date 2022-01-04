@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nombre": "Pedido 1",
+    "direccion": "Direccion 1",
+    "telefono": "123456789",
+    "precio": 100
+  },
+  {
+    "id": 2,
+    "nombre": "Pedido 2",
+    "direccion": "Direccion 2",
+    "telefono": "123456789",
+    "precio": 200
+  },
+  {
+    "id": 3,
+    "nombre": "Pedido 3",
+    "direccion": "Direccion 3",
+    "telefono": "123456789",
+    "precio": 500.5
+  },
+  {
+    "id": 4,
+    "nombre": "Pedido 4",
+    "direccion": "Direccion 4",
+    "telefono": "123456789",
+    "precio": 999.99
+  }
+]
