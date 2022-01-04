@@ -147,7 +147,7 @@ const renderPedidos = () => {
           <p>${pedido.telefono}</p>
         </div>
       <div>
-      <p class="pedido__container__precio"><b>$${pedido.precio.toFixed(
+      <p class="pedido__container__precio"><b>$ ${pedido.precio.toFixed(
         2
       )}</b></p>
     `;
@@ -173,7 +173,7 @@ const renderPedidos = () => {
 Actualiza la sección de Resumen en pantalla
 */
 const calcularEstadisticas = () => {
-  cotizacionDolar && $("#cotizacionDolar").text(`$${cotizacionDolar}`);
+  cotizacionDolar && $("#cotizacionDolar").text(`$ ${cotizacionDolar}`);
   let ventasTotales = 0;
   pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
   const cantidadPedidos = pedidos.length;
@@ -185,17 +185,17 @@ const calcularEstadisticas = () => {
   const ventasTotalesUSD =
     cotizacionDolar && (ventasTotales / parseFloat(cotizacionDolar)).toFixed(2);
 
-  $("#ventasTotales").text(`$${ventasTotales.toFixed(2)}`);
-  cotizacionDolar && $("#ventasTotalesUSD").text(`$${ventasTotalesUSD}`);
+  $("#ventasTotales").text(`$ ${ventasTotales.toFixed(2)}`);
+  cotizacionDolar && $("#ventasTotalesUSD").text(`U$S ${ventasTotalesUSD}`);
   $("#cantidadPedidos").text(`${cantidadPedidos}`);
   $("#cantidadPedidosEntregados").text(`${cantidadEntregados}`);
-  $("#promedioVentas").text(`$${promedioVentas}`);
+  $("#promedioVentas").text(`$ ${promedioVentas}`);
 };
 
 /*
 Codigo que inicializa el proyecto. Primero busca el array de pedidos en el
-localStorage. Si no encuentra nada, levanta los pedidos hardcodeados en la constante
-pedidosIniciales. Luego mapea ese JSON creando los objetos de tipo Pedido y los guarda
+localStorage. Si no encuentra nada, levanta los pedidos del archivo pedidosIniciales.json. 
+Luego mapea ese JSON creando los objetos de tipo Pedido y los guarda
 en el array "pedidos". Finalmente, guarda estos datos en el localStorage, y llama
 a la funcion que renderiza la pantalla.
 */

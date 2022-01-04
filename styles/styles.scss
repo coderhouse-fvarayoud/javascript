@@ -136,11 +136,15 @@ textarea {
 
 .modal__container {
   position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
   display: none;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
 }
 
@@ -179,6 +183,7 @@ textarea {
 
   &__text {
     color: #878787;
+    font-size: 0.9rem;
   }
 }
 
