@@ -42,7 +42,7 @@ const clearPedidos = () => {
 };
 
 /*
-Ordena el array de pedidos de mayor a menor (o de menor a mayor) segun su precio
+Ordena el array de pedidos de mayor a menor (o de menor a mayor) segun el parametro "valor"
 */
 const ordenarPedidos = (valor, orden) => {
   pedidos = pedidos.sort((a, b) => {
@@ -140,16 +140,19 @@ const renderPedidos = () => {
   pedidos.map((pedido) => {
     let pedidoHTML = `
     <li class="pedido__container">
-    <div class="pedido__container__top"><div>
-    <p><b>${pedido.nombre}</b></p>
-    <p>${pedido.direccion}</p>
-    <p>${pedido.telefono}</p>
-    </div>
-    <div>
-    <p class="pedido__container__precio"><b>$${pedido.precio.toFixed(2)}</b></p>
+      <div class="pedido__container__top">
+        <div>
+          <p><b>${pedido.nombre}</b></p>
+          <p>${pedido.direccion}</p>
+          <p>${pedido.telefono}</p>
+        </div>
+      <div>
+      <p class="pedido__container__precio"><b>$${pedido.precio.toFixed(
+        2
+      )}</b></p>
     `;
     if (cotizacionDolar) {
-      pedidoHTML += `<p class="pedido__container__precio">$${(
+      pedidoHTML += `<p class="pedido__container__precio">U$S ${(
         pedido.precio / parseFloat(cotizacionDolar)
       ).toFixed(2)}</p>`;
     }
