@@ -183,8 +183,9 @@ let cotizacionDolar = "";
 
 $(() => {
   // Inicializo el array de pedidos con el localStorage, y si no existe con el archivo pedidosIniciales.json
-  $.getJSON("pedidosIniciales.json", (json) => {
-    const pedidosJSON = JSON.parse(localStorage.getItem("pedidos")) || json;
+  $.getJSON("data/pedidosIniciales.json", (json) => {
+    const pedidosJSON =
+      JSON.parse(localStorage.getItem("pedidos")) || json || [];
     pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
     ordenarPedidos("nombre", "asc");
     guardarPedidos();
