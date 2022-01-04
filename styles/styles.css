@@ -13,9 +13,11 @@ body {
   font-family: "Lato", sans-serif;
   margin: 0;
   padding: 0;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  background-color: #fafafa;
+  background-color: #faf6f2;
 }
 
 p {
@@ -37,10 +39,9 @@ textarea {
 }
 
 .container {
-  width: 1024px;
   height: 100vh;
-  background-color: white;
-  padding: 32px;
+  background-color: #faf6f2;
+  padding: 32px 64px;
 }
 
 .pedidos__container {
@@ -52,37 +53,34 @@ textarea {
 .pedido__container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   padding: 16px;
-  background-color: #fafafa;
+  background-color: white;
   border-radius: 8px;
   margin: 8px;
   cursor: pointer;
-  min-width: 300px;
+  width: 330px;
+  transition: all 0.3s ease-in-out;
+}
+.pedido__container__top {
+  display: flex;
+  justify-content: space-between;
+}
+.pedido__container__buttons {
+  margin-top: 24px;
+  display: flex;
+}
+.pedido__container__precio {
+  color: #2a9d8f;
+  text-align: right;
 }
 
 .pedido__container:hover {
-  background-color: #ededed;
-}
-
-.primary-button {
-  background-color: #7c43ff;
-  color: white;
-  border-radius: 8px;
-  border-style: none;
-  box-sizing: border-box;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-weight: 600;
-  outline: none;
-  margin: 4px;
-}
-
-.primary-button:hover {
-  background-color: #a076ff;
-}
-
-.secondary-button {
   background-color: #fafafa;
+}
+
+.button {
+  background-color: #f0f0f0;
   color: black;
   border-radius: 8px;
   border-style: none;
@@ -92,10 +90,19 @@ textarea {
   font-weight: 600;
   outline: none;
   margin: 4px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
 }
-
-.secondary-button:hover {
-  background-color: #ededed;
+.button:hover {
+  background-color: #d7d7d7;
+}
+.button--primary {
+  background-color: #de2661;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+.button--primary:hover {
+  background-color: #e55281;
 }
 
 .flex {
@@ -107,6 +114,12 @@ textarea {
   justify-content: space-between;
   align-items: center;
   padding: 16px 0px;
+}
+.header--main {
+  background-color: #222222;
+  color: white;
+  display: flex;
+  padding: 16px 64px;
 }
 
 .modal__container {
@@ -128,6 +141,37 @@ textarea {
   padding: 32px 16px;
 }
 
-.ventas-totales-container {
-  height: 30px;
+.modal__buttons {
+  display: flex;
+}
+
+.estadisticas__container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.estadistica {
+  text-align: right;
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+  padding: 12px;
+  margin: 8px;
+  border-radius: 12px;
+}
+.estadistica__value {
+  color: #2a9d8f;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.estadistica__text {
+  color: #878787;
+}
+
+.dropdown {
+  padding: 8px;
+  border-radius: 8px;
+  outline: none;
+  appearance: none;
+  border: 1px solid gray;
 }

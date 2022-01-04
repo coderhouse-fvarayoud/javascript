@@ -140,20 +140,26 @@ const renderPedidos = () => {
   pedidos.map((pedido) => {
     let pedidoHTML = `
     <li class="pedido__container">
-    <p><b>Nombre:</b> ${pedido.nombre}</p>
-    <p><b>Direccion:</b> ${pedido.direccion}</p>
-    <p><b>Teléfono:</b> ${pedido.telefono}</p>
-    <p><b>Precio:</b> $${pedido.precio.toFixed(2)}</p>
+    <div class="pedido__container__top"><div>
+    <p><b>${pedido.nombre}</b></p>
+    <p>${pedido.direccion}</p>
+    <p>${pedido.telefono}</p>
+    </div>
+    <div>
+    <p class="pedido__container__precio"><b>$${pedido.precio.toFixed(2)}</b></p>
     `;
     if (cotizacionDolar) {
-      pedidoHTML += `<p><b>Precio (en U$S):</b> $${(
+      pedidoHTML += `<p class="pedido__container__precio">$${(
         pedido.precio / parseFloat(cotizacionDolar)
       ).toFixed(2)}</p>`;
     }
+    pedidoHTML += `</div></div>`;
+    pedidoHTML += `<div class="pedido__container__buttons">`;
     pedidoHTML += pedido.entregado
-      ? `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>Entregado</button>`
-      : `<button class="primary-button" onClick=cambiarEstadoPedido(${pedido.id})>No entregado</button>`;
-    pedidoHTML += `<button class="primary-button" onClick=eliminarPedido(${pedido.id})>Eliminar</button>`;
+      ? `<button class="button button--primary" onClick=cambiarEstadoPedido(${pedido.id})>Entregado</button>`
+      : `<button class="button" onClick=cambiarEstadoPedido(${pedido.id})>No entregado</button>`;
+    pedidoHTML += `<button class="button" onClick=eliminarPedido(${pedido.id})>Eliminar</button>`;
+    pedidoHTML += `</div>`;
     pedidoHTML += "</li>";
     $("#pedidos").append(pedidoHTML);
   });
@@ -161,13 +167,26 @@ const renderPedidos = () => {
 };
 
 /*
-Actualiza la sección de estadisticas en pantalla
+Actualiza la sección de Resumen en pantalla
 */
 const calcularEstadisticas = () => {
   cotizacionDolar && $("#cotizacionDolar").text(`$${cotizacionDolar}`);
   let ventasTotales = 0;
   pedidos.forEach((pedido) => (ventasTotales += pedido.precio));
+  const cantidadPedidos = pedidos.length;
+  const cantidadEntregados = pedidos.filter(
+    (pedido) => pedido.entregado
+  ).length;
+  const promedioVentas =
+    pedidos.length && (ventasTotales / pedidos.length).toFixed(2);
+  const ventasTotalesUSD =
+    cotizacionDolar && (ventasTotales / parseFloat(cotizacionDolar)).toFixed(2);
+
   $("#ventasTotales").text(`$${ventasTotales.toFixed(2)}`);
+  cotizacionDolar && $("#ventasTotalesUSD").text(`$${ventasTotalesUSD}`);
+  $("#cantidadPedidos").text(`${cantidadPedidos}`);
+  $("#cantidadPedidosEntregados").text(`${cantidadEntregados}`);
+  $("#promedioVentas").text(`$${promedioVentas}`);
 };
 
 /*

@@ -1,30 +1,30 @@
 [
   {
     "id": 1,
-    "nombre": "Pedido 1",
-    "direccion": "Direccion 1",
-    "telefono": "123456789",
-    "precio": 100
+    "nombre": "Juan Carlos",
+    "direccion": "25 de Mayo 400",
+    "telefono": "1132324343",
+    "precio": 400
   },
   {
     "id": 2,
-    "nombre": "Pedido 2",
-    "direccion": "Direccion 2",
-    "telefono": "123456789",
+    "nombre": "José",
+    "direccion": "Alvear 220",
+    "telefono": "3492233223",
     "precio": 200
   },
   {
     "id": 3,
-    "nombre": "Pedido 3",
-    "direccion": "Direccion 3",
-    "telefono": "123456789",
-    "precio": 500.5
+    "nombre": "Pedro",
+    "direccion": "Salta 459",
+    "telefono": "3516843932",
+    "precio": 250
   },
   {
     "id": 4,
-    "nombre": "Pedido 4",
-    "direccion": "Direccion 4",
-    "telefono": "123456789",
+    "nombre": "Adrián",
+    "direccion": "9 de Julio 210",
+    "telefono": "1132324328",
     "precio": 999.99
   }
 ]

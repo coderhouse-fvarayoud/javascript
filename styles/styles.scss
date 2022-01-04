@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+
+$primary-color: #de2661;
+$primary-green: #2a9d8f;
+$background-color: #faf6f2;
+
 * {
   margin: 0;
   padding: 0;
@@ -13,9 +18,11 @@ body {
   font-family: "Lato", sans-serif;
   margin: 0;
   padding: 0;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  background-color: #fafafa;
+  background-color: $background-color;
 }
 
 p {
@@ -37,10 +44,9 @@ textarea {
 }
 
 .container {
-  width: 1024px;
   height: 100vh;
-  background-color: white;
-  padding: 32px;
+  background-color: $background-color;
+  padding: 32px 64px;
 }
 
 .pedidos__container {
@@ -52,37 +58,37 @@ textarea {
 .pedido__container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   padding: 16px;
-  background-color: #fafafa;
+  background-color: white;
   border-radius: 8px;
   margin: 8px;
   cursor: pointer;
-  min-width: 300px;
+  width: 330px;
+  transition: all 0.3s ease-in-out;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__buttons {
+    margin-top: 24px;
+    display: flex;
+  }
+
+  &__precio {
+    color: $primary-green;
+    text-align: right;
+  }
 }
 
 .pedido__container:hover {
-  background-color: #ededed;
-}
-
-.primary-button {
-  background-color: #7c43ff;
-  color: white;
-  border-radius: 8px;
-  border-style: none;
-  box-sizing: border-box;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-weight: 600;
-  outline: none;
-  margin: 4px;
-}
-
-.primary-button:hover {
-  background-color: #a076ff;
-}
-
-.secondary-button {
   background-color: #fafafa;
+}
+
+.button {
+  background-color: #f0f0f0;
   color: black;
   border-radius: 8px;
   border-style: none;
@@ -92,10 +98,22 @@ textarea {
   font-weight: 600;
   outline: none;
   margin: 4px;
-}
+  width: 100%;
+  transition: all 0.3s ease-in-out;
 
-.secondary-button:hover {
-  background-color: #ededed;
+  &:hover {
+    background-color: darken(#f0f0f0, 10);
+  }
+
+  &--primary {
+    background-color: $primary-color;
+    color: white;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: lighten($primary-color, 10);
+    }
+  }
 }
 
 .flex {
@@ -107,6 +125,13 @@ textarea {
   justify-content: space-between;
   align-items: center;
   padding: 16px 0px;
+
+  &--main {
+    background-color: #222222;
+    color: white;
+    display: flex;
+    padding: 16px 64px;
+  }
 }
 
 .modal__container {
@@ -128,6 +153,39 @@ textarea {
   padding: 32px 16px;
 }
 
-.ventas-totales-container {
-  height: 30px;
+.modal__buttons {
+  display: flex;
+}
+
+.estadisticas__container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.estadistica {
+  text-align: right;
+  display: flex;
+  background-color: white;
+  flex-direction: column;
+  padding: 12px;
+  margin: 8px;
+  border-radius: 12px;
+
+  &__value {
+    color: $primary-green;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  &__text {
+    color: #878787;
+  }
+}
+
+.dropdown {
+  padding: 8px;
+  border-radius: 8px;
+  outline: none;
+  appearance: none;
+  border: 1px solid gray;
 }

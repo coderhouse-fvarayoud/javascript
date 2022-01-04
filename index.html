@@ -23,27 +23,54 @@
             <input id="input-telefono" type="text" />
             <p>Precio (en ARS): </p>
             <input id="input-precio" type="number" />
-            <div>
-                <button class="primary-button" id="boton-cancelar">Cancelar</button>
-                <button class="primary-button" id="boton-aceptar">Ingresar</button>
+            <div class="modal__buttons">
+                <button class="button" id="boton-cancelar">Cancelar</button>
+                <button class="button button--primary" id="boton-aceptar">Ingresar</button>
             </div>
+        </div>
+    </div>
+
+    <div class="header header--main">
+        <h1>Mi Negocio</h1>
+        <div class="flex">
+            <button class="button button--primary" id="boton-agregar-pedido">Agregar Pedido</button>
         </div>
     </div>
     <div class="container">
         <div class="header">
-            <h1>Estadísticas de ventas</h1>
-            <div class="flex">
-                <button class="primary-button" id="boton-agregar-pedido">Agregar Pedido</button>
-            </div>
+            <h3>Resumen del día</h3>
         </div>
-        <div class="ventas-totales-container">
-            <h3>Ventas totales: <span id="ventasTotales"></span></h3>
-            <h3>Cotizacion dolar: <span id="cotizacionDolar">Cargando...</span></h3>
+        <div class="estadisticas__container">
+            <div class="estadistica">
+                <p class="estadistica__value" id="cantidadPedidos"></p>
+                <p class="estadistica__text">Pedidos </p>
+            </div>
+            <div class="estadistica">
+                <p class="estadistica__value" id="cantidadPedidosEntregados"></p>
+                <p class="estadistica__text">Pedidos entregados </p>
+            </div>
+            <div class="estadistica">
+                <p class="estadistica__value" id="ventasTotales"></p>
+                <p class="estadistica__text">Ventas totales </p>
+            </div>
+            <div class="estadistica">
+                <p class="estadistica__value" id="ventasTotalesUSD">...</p>
+                <p class="estadistica__text">Ventas totales (en U$S) </p>
+            </div>
+            <div class="estadistica">
+                <p class="estadistica__value" id="promedioVentas"></p>
+                <p class="estadistica__text">Precio promedio </p>
+            </div>
+            <div class="estadistica">
+                <p class="estadistica__value" id="cotizacionDolar">...</p>
+                <p class="estadistica__text">Cotizacion dolar </p>
+            </div>
+
         </div>
         <div class="header">
             <h3>Lista de pedidos</h3>
             <div class="flex">
-                <select id="orden-dropdown">
+                <select class="dropdown" id="orden-dropdown">
                     <option value="nombre-asc">Ordenar por nombre (asc)</option>
                     <option value="nombre-desc">Ordenar por nombre (desc)</option>
                     <option value="precio-asc">Ordenar por precio (asc)</option>
@@ -53,6 +80,7 @@
         </div>
         <ul id="pedidos" class="pedidos__container"></ul>
     </div>
+
     <!-- main JS code -->
     <script src="js/main.js"></script>
 </body>
