@@ -157,6 +157,12 @@ textarea {
   padding: 32px 16px;
 }
 
+.modal__error {
+  padding: 8px;
+  color: red;
+  font-weight: 600;
+}
+
 .modal__buttons {
   display: flex;
 }

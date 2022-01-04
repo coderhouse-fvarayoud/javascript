@@ -1,4 +1,3 @@
-// Clase que representa el objeto Pedido
 class Pedido {
   constructor({
     nombre,
@@ -30,15 +29,8 @@ class Pedido {
 /*
 Guarda el array de pedidos en localStorage
 */
-const guardarPedidos = () => {
+const guardarPedidosEnStorage = () => {
   localStorage.setItem("pedidos", JSON.stringify(pedidos));
-};
-
-/*
-Borra todos los pedidos guardados en memoria y en el localStorage
-*/
-const clearPedidos = () => {
-  pedidos = [];
 };
 
 /*
@@ -74,7 +66,7 @@ const cambiarEstadoPedido = (id) => {
     }
     return pedido;
   });
-  guardarPedidos();
+  guardarPedidosEnStorage();
   renderPedidos();
 };
 
@@ -83,7 +75,7 @@ Elimina un pedido del array segun su id
 */
 const eliminarPedido = (id) => {
   pedidos = pedidos.filter((pedido) => pedido.id !== id);
-  guardarPedidos();
+  guardarPedidosEnStorage();
   renderPedidos();
 };
 
@@ -98,6 +90,7 @@ const setIsModalOpen = (status) => {
     $("#input-precio, #input-nombre, #input-telefono, #input-direccion").val(
       ""
     );
+    $("#modal-error").text("");
     $("#modal-container")
       .css("display", "flex")
       .hide()
@@ -120,14 +113,20 @@ const agregarPedido = () => {
   const telefono = $("#input-telefono").val();
   const precio = Number.parseFloat($("#input-precio").val());
 
-  if (nombre && direccion && telefono && precio) {
+  if (!nombre) {
+    $("#modal-error").text(`Debe ingresar un nombre`);
+  } else if (!direccion) {
+    $("#modal-error").text(`Debe ingresar una dirección`);
+  } else if (!telefono) {
+    $("#modal-error").text(`Debe ingresar un teléfono`);
+  } else if (!precio) {
+    $("#modal-error").text(`Debe ingresar un precio`);
+  } else {
     const pedidoNew = new Pedido({ nombre, direccion, telefono, precio });
     pedidos.push(pedidoNew);
-    guardarPedidos();
+    guardarPedidosEnStorage();
     renderPedidos();
     setIsModalOpen(false);
-  } else {
-    alert("Faltan datos!");
   }
 };
 
@@ -193,27 +192,23 @@ const calcularEstadisticas = () => {
 };
 
 /*
-Codigo que inicializa el proyecto. Primero busca el array de pedidos en el
-localStorage. Si no encuentra nada, levanta los pedidos del archivo pedidosIniciales.json. 
-Luego mapea ese JSON creando los objetos de tipo Pedido y los guarda
-en el array "pedidos". Finalmente, guarda estos datos en el localStorage, y llama
-a la funcion que renderiza la pantalla.
+Inicializo el array de pedidos con el localStorage, y si no existe con el archivo pedidosIniciales.json
 */
-
-let pedidos = [];
-let cotizacionDolar = "";
-
-$(() => {
-  // Inicializo el array de pedidos con el localStorage, y si no existe con el archivo pedidosIniciales.json
+const inicializarPedidos = () => {
   $.getJSON("data/pedidosIniciales.json", (json) => {
     const pedidosJSON =
       JSON.parse(localStorage.getItem("pedidos")) || json || [];
     pedidos = pedidosJSON.map((pedido) => new Pedido(pedido));
     ordenarPedidos("nombre", "asc");
-    guardarPedidos();
+    guardarPedidosEnStorage();
     renderPedidos();
   });
-  // Obtengo la cotizacion del dolar
+};
+
+/*
+Obtengo la cotizacion del dolar y actualizo la pantalla
+*/
+const obtenerCotizacionDolar = () => {
   $.getJSON(
     "https://www.dolarsi.com/api/api.php?type=valoresprincipales",
     (res, status) => {
@@ -225,7 +220,11 @@ $(() => {
       }
     }
   );
-  // Agrego eventos a los distintos elementos de la pagina
+};
+/*
+Agrego eventos a los distintos elementos de la pagina
+*/
+const inicializarEventos = () => {
   $("#boton-aceptar").click(() => agregarPedido());
   $("#boton-cancelar").click(() => setIsModalOpen(false));
   $("#boton-agregar-pedido").click(() => setIsModalOpen(true));
@@ -259,4 +258,21 @@ $(() => {
   $(document).keydown((e) => {
     if (e.which === 27) setIsModalOpen(false);
   });
+};
+
+/*
+Codigo que inicializa el proyecto. Primero busca el array de pedidos en el
+localStorage. Si no encuentra nada, levanta los pedidos del archivo pedidosIniciales.json. 
+Luego mapea ese JSON creando los objetos de tipo Pedido y los guarda
+en el array "pedidos". Finalmente, guarda estos datos en el localStorage, y llama
+a la funcion que renderiza la pantalla.
+*/
+
+let pedidos = [];
+let cotizacionDolar = "";
+
+$(() => {
+  inicializarPedidos();
+  obtenerCotizacionDolar();
+  inicializarEventos();
 });

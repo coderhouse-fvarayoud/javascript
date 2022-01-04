@@ -24,13 +24,13 @@
             <input id="input-telefono" type="text" />
             <p>Precio (en ARS): </p>
             <input id="input-precio" type="number" />
+            <p id="modal-error" class="modal__error"></p>
             <div class="modal__buttons">
                 <button class="button" id="boton-cancelar">Cancelar</button>
                 <button class="button button--primary" id="boton-aceptar">Ingresar</button>
             </div>
         </div>
     </div>
-
     <div class="header header--main">
         <h1>Mi Negocio</h1>
         <div class="flex">
@@ -66,7 +66,6 @@
                 <p class="estadistica__value" id="cotizacionDolar">...</p>
                 <p class="estadistica__text">Cotización dolar </p>
             </div>
-
         </div>
         <div class="header">
             <h3>Lista de pedidos</h3>
@@ -81,7 +80,6 @@
         </div>
         <ul id="pedidos" class="pedidos__container"></ul>
     </div>
-
     <!-- main JS code -->
     <script src="js/main.js"></script>
 </body>
